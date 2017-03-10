@@ -27,14 +27,27 @@
  *	x1 - src
  */
 ENTRY(copy_page)
-	/* Assume cache line size is 64 bytes. */
-	prfm	pldl1strm, [x1, #64]
-1:	ldp	x2, x3, [x1]
+	# Prefetch two cache lines ahead.
+	prfm    pldl1strm, [x1, #128]
+	prfm    pldl1strm, [x1, #256]
+
+	ldp	x2, x3, [x1]
 	ldp	x4, x5, [x1, #16]
 	ldp	x6, x7, [x1, #32]
 	ldp	x8, x9, [x1, #48]
-	add	x1, x1, #64
-	prfm	pldl1strm, [x1, #64]
+	ldp	x10, x11, [x1, #64]
+	ldp	x12, x13, [x1, #80]
+	ldp	x14, x15, [x1, #96]
+	ldp	x16, x17, [x1, #112]
+
+	mov	x18, #(PAGE_SIZE - 128)
+	add	x1, x1, #128
+1:
+	subs	x18, x18, #128
+
+	prfm    pldl1strm, [x1, #384]
+
+>>>>>>> 9b70fdc6f8ac... ARM64: lib: always patch in prfm
 	stnp	x2, x3, [x0]
 	stnp	x4, x5, [x0, #16]
 	stnp	x6, x7, [x0, #32]
