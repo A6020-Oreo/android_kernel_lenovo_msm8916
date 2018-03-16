@@ -63,6 +63,14 @@
 			label = "peripheral_mem";
 		};
 
+    pstore_reserve_mem: pstore_reserve_mem_region@0 {
+			linux,reserve-contiguous-region;
+			linux,reserve-region;
+			linux,remove-completely;
+			reg = <0x0 0x9ff00000 0x0 0x00100000>;
+			label = "pstore_reserve_mem";
+    };
+
 		venus_mem: venus_region@0 {
 			linux,reserve-contiguous-region;
 			linux,memory-limit = <0x90000000>;
@@ -1422,7 +1430,7 @@
 			qcom,msm-dai-q6-dev-id = <12289>;
 		};
 
-		bt_a2dp_rx: qcom,msm-dai-q6-bt-a2dp-rx {
+                bt_a2dp_rx: qcom,msm-dai-q6-bt-a2dp-rx {
 			compatible = "qcom,msm-dai-q6-dev";
 			qcom,msm-dai-q6-dev-id = <12290>;
 		};
